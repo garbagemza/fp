@@ -1,31 +1,35 @@
-#include <stdint.h>
+/**
+  * This is free and unencumbered software released into the public domain.
+  *
+  * Anyone is free to copy, modify, publish, use, compile, sell, or
+  * distribute this software, either in source code form or as a compiled
+  * binary, for any purpose, commercial or non-commercial, and by any
+  * means.
+  *
+  * In jurisdictions that recognize copyright laws, the author or authors
+  * of this software dedicate any and all copyright interest in the
+  * software to the public domain. We make this dedication for the benefit
+  * of the public at large and to the detriment of our heirs and
+  * successors. We intend this dedication to be an overt act of
+  * relinquishment in perpetuity of all present and future rights to this
+  * software under copyright law.
+  *
+  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+  * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+  * IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+  * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+  * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+  * OTHER DEALINGS IN THE SOFTWARE.
+  *
+  * For more information, please refer to <https://unlicense.org>
+  **/
+
+#include "fp64.h"
 #include <stdio.h>
 
-struct fp64 {
-  int64_t mantissa;
-  int64_t exponent;
-};
-
-int64_t fp64_min_exponent(struct fp64* lhs, struct fp64* rhs) {
-  if (lhs->exponent <= rhs->exponent) {
-    return lhs->exponent;
-  } else {
-    return rhs->exponent;
-  }
-}
-
-struct fp64 fp64_callibrate(struct fp64* value, int64_t min_exponent) {
-
-  struct fp64 result;
-  result.mantissa = value->mantissa;
-  result.exponent = value->exponent;
-
-  while (result.exponent > min_exponent) {
-    result.mantissa *= 10;
-    result.exponent--;
-  }
-  return result;
-}
+int64_t fp64_min_exponent(struct fp64* lhs, struct fp64* rhs);
+struct fp64 fp64_callibrate(struct fp64* value, int64_t min_exponent);
 
 // Sums 2 floating point values and rewrites the result into output
 // The return value is 0
@@ -79,31 +83,22 @@ int32_t fp64_cmp_ge(struct fp64* lhs, struct fp64* rhs) {
   return lhs_copy.mantissa >= rhs_copy.mantissa;
 }
 
-int main(int argc, char *argv[])
-{
-  struct fp64 a = {3, -2};
-  struct fp64 b = {3, 2};
-  struct fp64 out;
-  
-  fp64_add(&a, &b, &out);
-
-  printf("The sum is: %lld e %lld\n", out.mantissa, out.exponent);
-
-  fp64_sub(&a, &b, &out);
-
-  printf("The subtraction is: %lld e %lld\n", out.mantissa, out.exponent);
-
-  int32_t bigger = fp64_cmp_ge(&a, &b);
-  printf("a is bigger than b?: %d\n", bigger);
-
-  int32_t bigger2 = fp64_cmp_ge(&b, &a);
-  printf("b is bigger than a?: %d\n", bigger2);
-
-  fp64_mul(&a, &b, &out);
-  printf("The multiplication is %lld e %lld\n", out.mantissa, out.exponent);
-
-  fp64_div(&a, &b, &out);
-  printf("The division is %lld e %lld\n", out.mantissa, out.exponent);
-
-  return 0;
+int64_t fp64_min_exponent(struct fp64* lhs, struct fp64* rhs) {
+  if (lhs->exponent <= rhs->exponent) {
+    return lhs->exponent;
+  } else {
+    return rhs->exponent;
+  }
 }
+
+struct fp64 fp64_callibrate(struct fp64* value, int64_t min_exponent) {
+  struct fp64 result;
+  result.mantissa = value->mantissa;
+  result.exponent = value->exponent;
+  while (result.exponent > min_exponent) {
+    result.mantissa *= 10;
+    result.exponent--;
+  }
+  return result;
+}
+
