@@ -51,10 +51,28 @@ uint32_t fp64_sub(struct fp64* lhs, struct fp64* rhs, struct fp64* output) {
   return 0;
 }
 
+// Multiplies 2 floating point values and rewrites the result into output
+// The return value is 0
+//
+uint32_t fp64_mul(struct fp64* lhs, struct fp64* rhs, struct fp64* output) {
+  output->mantissa = lhs->mantissa * rhs->mantissa;
+  output->exponent = lhs->exponent + rhs->exponent;
+  return 0;
+}
+
+// Divides 2 floating point values and rewrites the result into output
+// The return value is 0
+//
+uint32_t fp64_div(struct fp64* lhs, struct fp64* rhs, struct fp64* output) {
+  output->mantissa = lhs->mantissa / rhs->mantissa;
+  output->exponent = lhs->exponent - rhs->exponent;
+  return 0;
+}
+
 // Compares 2 floating point values and returns true whether lhs
 // value is bigger or equal than rhs value.
 //
-int64_t fp64_cmp_ge(struct fp64* lhs, struct fp64* rhs) {
+int32_t fp64_cmp_ge(struct fp64* lhs, struct fp64* rhs) {
   int64_t min = fp64_min_exponent(lhs, rhs);
   struct fp64 lhs_copy = fp64_callibrate(lhs, min);
   struct fp64 rhs_copy = fp64_callibrate(rhs, min);
@@ -63,7 +81,7 @@ int64_t fp64_cmp_ge(struct fp64* lhs, struct fp64* rhs) {
 
 int main(int argc, char *argv[])
 {
-  struct fp64 a = {3, 2};
+  struct fp64 a = {3, -2};
   struct fp64 b = {3, 2};
   struct fp64 out;
   
@@ -75,11 +93,17 @@ int main(int argc, char *argv[])
 
   printf("The subtraction is: %lld e %lld\n", out.mantissa, out.exponent);
 
-  int64_t bigger = fp64_cmp_ge(&a, &b);
-  printf("a is bigger than b?: %lld\n", bigger);
+  int32_t bigger = fp64_cmp_ge(&a, &b);
+  printf("a is bigger than b?: %d\n", bigger);
 
-  int64_t bigger2 = fp64_cmp_ge(&b, &a);
-  printf("b is bigger than a?: %lld\n", bigger2);
+  int32_t bigger2 = fp64_cmp_ge(&b, &a);
+  printf("b is bigger than a?: %d\n", bigger2);
+
+  fp64_mul(&a, &b, &out);
+  printf("The multiplication is %lld e %lld\n", out.mantissa, out.exponent);
+
+  fp64_div(&a, &b, &out);
+  printf("The division is %lld e %lld\n", out.mantissa, out.exponent);
 
   return 0;
 }
