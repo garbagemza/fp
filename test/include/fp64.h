@@ -39,27 +39,27 @@ struct fp64 {
 // Sums 2 floating point values and rewrites the result into output
 // The return value is 0
 //
-uint32_t fp64_add(struct fp64* lhs, struct fp64* rhs, struct fp64* output);
+uint32_t fp64_add(const struct fp64* lhs, const struct fp64* rhs, struct fp64* output);
 
 // Subtracts 2 floating point values and rewrites the result into output
 // The return value is 0
 //
-uint32_t fp64_sub(struct fp64* lhs, struct fp64* rhs, struct fp64* output);
+uint32_t fp64_sub(const struct fp64* lhs, const struct fp64* rhs, struct fp64* output);
 
 // Multiplies 2 floating point values and rewrites the result into output
 // The return value is 0
 //
-uint32_t fp64_mul(struct fp64* lhs, struct fp64* rhs, struct fp64* output);
+uint32_t fp64_mul(const struct fp64* lhs, const struct fp64* rhs, struct fp64* output);
 
 // Divides 2 floating point values and rewrites the result into output
 // The return value is 0
 //
-uint32_t fp64_div(struct fp64* lhs, struct fp64* rhs, struct fp64* output);
+uint32_t fp64_div(const struct fp64* lhs, const struct fp64* rhs, struct fp64* output);
 
 // Compares 2 floating point values and returns true whether lhs
 // value is bigger or equal than rhs value.
 //
-int32_t fp64_cmp_ge(struct fp64* lhs, struct fp64* rhs);
+int32_t fp64_cmp_ge(const struct fp64* lhs, const struct fp64* rhs);
 
 #endif // !__FP64__
 

@@ -25,41 +25,19 @@
   * For more information, please refer to <https://unlicense.org>
   **/
 
-#ifndef __FP64__
-#define __FP64__ 1
+#ifndef __FP64_EXT__
+#define __FP64_EXT__ 1
 
-#include <stdint.h>
+#include "fp64.h"
 
-struct fp64 {
-  int64_t mantissa;
-  int64_t exponent;
-};
-
-
-// Sums 2 floating point values and rewrites the result into output
-// The return value is 0
+// Calculates the percentage of value.
+// The result is returned.
 //
-uint32_t fp64_add(const struct fp64* lhs, const struct fp64* rhs, struct fp64* output);
+struct fp64 fp64_ext1_percentage(const struct fp64* value, const struct fp64* percent);
 
-// Subtracts 2 floating point values and rewrites the result into output
-// The return value is 0
+// Copies value and returns a copy of the original value.
 //
-uint32_t fp64_sub(const struct fp64* lhs, const struct fp64* rhs, struct fp64* output);
+struct fp64 fp64_ext1_copy(const struct fp64* value);
 
-// Multiplies 2 floating point values and rewrites the result into output
-// The return value is 0
-//
-uint32_t fp64_mul(const struct fp64* lhs, const struct fp64* rhs, struct fp64* output);
-
-// Divides 2 floating point values and rewrites the result into output
-// The return value is 0
-//
-uint32_t fp64_div(const struct fp64* lhs, const struct fp64* rhs, struct fp64* output);
-
-// Compares 2 floating point values and returns true whether lhs
-// value is bigger or equal than rhs value.
-//
-int32_t fp64_cmp_ge(const struct fp64* lhs, const struct fp64* rhs);
-
-#endif // !__FP64__
+#endif // !__FP64_EXT__
 

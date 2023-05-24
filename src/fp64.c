@@ -26,15 +26,14 @@
   **/
 
 #include "fp64.h"
-#include <stdio.h>
 
-int64_t fp64_min_exponent(struct fp64* lhs, struct fp64* rhs);
-struct fp64 fp64_callibrate(struct fp64* value, int64_t min_exponent);
+int64_t fp64_min_exponent(const struct fp64* lhs, const struct fp64* rhs);
+struct fp64 fp64_callibrate(const struct fp64* value, int64_t min_exponent);
 
 // Sums 2 floating point values and rewrites the result into output
 // The return value is 0
 //
-uint32_t fp64_add(struct fp64* lhs, struct fp64* rhs, struct fp64* output) {
+uint32_t fp64_add(const struct fp64* lhs, const struct fp64* rhs, struct fp64* output) {
   int64_t min = fp64_min_exponent(lhs, rhs);
   struct fp64 lhs_copy = fp64_callibrate(lhs, min);
   struct fp64 rhs_copy = fp64_callibrate(rhs, min);
@@ -46,7 +45,7 @@ uint32_t fp64_add(struct fp64* lhs, struct fp64* rhs, struct fp64* output) {
 // Subtracts 2 floating point values and rewrites the result into output
 // The return value is 0
 //
-uint32_t fp64_sub(struct fp64* lhs, struct fp64* rhs, struct fp64* output) {
+uint32_t fp64_sub(const struct fp64* lhs, const struct fp64* rhs, struct fp64* output) {
   int64_t min = fp64_min_exponent(lhs, rhs);
   struct fp64 lhs_copy = fp64_callibrate(lhs, min);
   struct fp64 rhs_copy = fp64_callibrate(rhs, min);
@@ -58,7 +57,7 @@ uint32_t fp64_sub(struct fp64* lhs, struct fp64* rhs, struct fp64* output) {
 // Multiplies 2 floating point values and rewrites the result into output
 // The return value is 0
 //
-uint32_t fp64_mul(struct fp64* lhs, struct fp64* rhs, struct fp64* output) {
+uint32_t fp64_mul(const struct fp64* lhs, const struct fp64* rhs, struct fp64* output) {
   output->mantissa = lhs->mantissa * rhs->mantissa;
   output->exponent = lhs->exponent + rhs->exponent;
   return 0;
@@ -67,7 +66,7 @@ uint32_t fp64_mul(struct fp64* lhs, struct fp64* rhs, struct fp64* output) {
 // Divides 2 floating point values and rewrites the result into output
 // The return value is 0
 //
-uint32_t fp64_div(struct fp64* lhs, struct fp64* rhs, struct fp64* output) {
+uint32_t fp64_div(const struct fp64* lhs, const struct fp64* rhs, struct fp64* output) {
   output->mantissa = lhs->mantissa / rhs->mantissa;
   output->exponent = lhs->exponent - rhs->exponent;
   return 0;
@@ -76,14 +75,14 @@ uint32_t fp64_div(struct fp64* lhs, struct fp64* rhs, struct fp64* output) {
 // Compares 2 floating point values and returns true whether lhs
 // value is bigger or equal than rhs value.
 //
-int32_t fp64_cmp_ge(struct fp64* lhs, struct fp64* rhs) {
+int32_t fp64_cmp_ge(const struct fp64* lhs, const struct fp64* rhs) {
   int64_t min = fp64_min_exponent(lhs, rhs);
   struct fp64 lhs_copy = fp64_callibrate(lhs, min);
   struct fp64 rhs_copy = fp64_callibrate(rhs, min);
   return lhs_copy.mantissa >= rhs_copy.mantissa;
 }
 
-int64_t fp64_min_exponent(struct fp64* lhs, struct fp64* rhs) {
+int64_t fp64_min_exponent(const struct fp64* lhs, const struct fp64* rhs) {
   if (lhs->exponent <= rhs->exponent) {
     return lhs->exponent;
   } else {
@@ -91,7 +90,7 @@ int64_t fp64_min_exponent(struct fp64* lhs, struct fp64* rhs) {
   }
 }
 
-struct fp64 fp64_callibrate(struct fp64* value, int64_t min_exponent) {
+struct fp64 fp64_callibrate(const struct fp64* value, int64_t min_exponent) {
   struct fp64 result;
   result.mantissa = value->mantissa;
   result.exponent = value->exponent;
